@@ -69,6 +69,7 @@ func NewWithParser(alg string, parser *jwt.Parser, signKey interface{}, verifyKe
 // http response.
 func Verifier(ja *JWTAuth) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
+		fmt.Printf("****Verifier: %+v", ja)
 		return Verify(ja, TokenFromQuery, TokenFromHeader, TokenFromCookie)(next)
 	}
 }
@@ -76,6 +77,7 @@ func Verifier(ja *JWTAuth) func(http.Handler) http.Handler {
 func Verify(ja *JWTAuth, findTokenFns ...func(r *http.Request) string) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		hfn := func(w http.ResponseWriter, r *http.Request) {
+			fmt.Printf("****Verify: %+v", ja)
 			ctx := r.Context()
 			token, err := VerifyRequest(ja, r, findTokenFns...)
 			ctx = NewContext(ctx, token, err)
