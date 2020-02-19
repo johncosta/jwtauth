@@ -140,6 +140,8 @@ func (ja *JWTAuth) Encode(claims jwt.Claims) (t *jwt.Token, tokenString string, 
 }
 
 func (ja *JWTAuth) Decode(tokenString string) (t *jwt.Token, err error) {
+	fmt.Printf("****Decode: %+v", ja)
+	fmt.Printf("****Decode: %s", tokenString)
 	t, err = ja.parser.Parse(tokenString, ja.keyFunc)
 	if err != nil {
 		return nil, err
